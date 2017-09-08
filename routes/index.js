@@ -18,7 +18,7 @@ router.get('/', function(req, res, next) {
 	py.stdin.write(JSON.stringify(data));
 	py.stdin.end();
 	*/
-	res.render('index', { title: 'Express' , result: dataString});
+	res.render('index', { title: 'Express' , result: 123});
 });
 
 module.exports = router;
