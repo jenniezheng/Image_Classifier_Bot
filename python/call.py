@@ -11,7 +11,7 @@ def read_in():
 def main():
     #get our data as an array from read_in()
     lines = read_in()
-
+    print 'wTF'
     #create a numpy array
     #np_lines = np.array(lines)
 
