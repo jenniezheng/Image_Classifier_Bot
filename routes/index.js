@@ -9,10 +9,11 @@ router.get('/', function(req, res, next) {
     dataString = '0';
 	py.stdout.on('data', function(data){
 	   dataString += data.toString();
+	   py.stdout.on('end', function(){
+	  		res.render('index', { title: 'Express' , result: dataString});
+		});
 	});
-	py.stdout.on('end', function(){
-	  res.render('index', { title: 'Express' , result: dataString});
-	});
+
 	py.stdin.write(JSON.stringify(data));
 	py.stdin.end();
 
