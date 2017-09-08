@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
 	  dataString += data.toString();
 	});
 	py.stdout.on('end', function(){
-	  res.render('index', { title: 'Express' , result: dataString});
+	  res.render('index', { title: 'Express' , result: 123});
 	});
 	py.stdin.write(JSON.stringify(data));
 	py.stdin.end();
