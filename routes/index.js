@@ -1,10 +1,9 @@
 var express = require('express');
 var router = express.Router();
-//var spawn = require('child_process').spawn
-/* GET home page. */
+var spawn = require('child_process').spawn
+
 router.get('/', function(req, res, next) {
-	/*
-			//start.js
+	//start.js
     var py = spawn('python', ['python/call.py']),
     data = [1,2,3,4,5,6,7,8,9],
     dataString = '';
@@ -18,8 +17,6 @@ router.get('/', function(req, res, next) {
 	});
 	py.stdin.write(JSON.stringify(data));
 	py.stdin.end();
-	*/
-	res.render('index', { title: 'Express' , result: 23});
 
 });
 

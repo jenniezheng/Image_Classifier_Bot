@@ -1,6 +1,5 @@
 #!/bin/bash
-port=3000
-
+#requires export of PORT first
 #in case node didn't die
 trap "killall node; exit 0;" SIGINT SIGTERM
 
@@ -10,7 +9,7 @@ killall node
 node app.js &
 nodeID=$!
 sleep 1;
-google-chrome http://localhost:$port/
+google-chrome http://localhost:$PORT/
 #have browser window open
 while true; do
     #upon modification
@@ -22,7 +21,7 @@ while true; do
     #give node some time open
     sleep 1;
     #last open with localhost in name
-    browser_window=$(xdotool search --name "localhost:$port" | tail -1 )
+    browser_window=$(xdotool search --name "localhost:$PORT" | tail -1 )
     current_window=$(xdotool getactivewindow)
     #if found browser window
     if  [[ !  -z  $browser_window  ]]; then
