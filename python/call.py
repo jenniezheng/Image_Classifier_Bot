@@ -20,6 +20,7 @@ def main():
 
     #return the sum to the output stream
     print 22
+    sys.stdout.flush()
 
 #start process
 if __name__ == '__main__':
