@@ -4,6 +4,7 @@ var spawn = require('child_process').spawn
 
 router.get('/', function(req, res, next) {
 	console.log("STARTING CHILD")
+
     var py = spawn('python', ['python/call.py']),
     data = [1,2,3,4,5,6,7,8,9],
     dataString = '02';
