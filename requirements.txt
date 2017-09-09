@@ -1,5 +1,4 @@
 numpy
 tensorflow
 six
-tarfile
-re
+__future__
