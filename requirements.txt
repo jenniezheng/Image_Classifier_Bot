@@ -1,4 +1,5 @@
 numpy
 tensorflow
-six.moves
+six
 tarfile
+re
