@@ -50,16 +50,6 @@ app.use(function(err, req, res, next) {
 });
 
 app.listen(process.env.PORT, process.env.IP,function(){
-  console.log("App started on localhost:"+3000);
+  console.log("App started on localhost:"+process.env.PORT);
 });
 
-/*
-    "body-parser": "~1.17.1",
-    "cookie-parser": "~1.4.3",
-    "debug": "~2.6.3",
-
-  "morgan": "~1.8.1",
-    "node-sass-middleware": "0.9.8",
-    "python3": "0.0.1",
-    "serve-favicon": "~2.4.2"
-    */

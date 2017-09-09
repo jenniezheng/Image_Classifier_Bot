@@ -9,17 +9,19 @@ def read_in():
     return json.loads(lines[0])
 
 def main():
+    print "I started"
     #get our data as an array from read_in()
     lines = read_in()
     #create a numpy array
     np_lines = np.array(lines)
-
+    print "I read stuff"
     #use numpys sum method to find sum of all elements in the array
     lines_sum = np.sum(np_lines)
 
     #return the sum to the output stream
     print lines_sum
     sys.stdout.flush()
+    return;
 
 #start process
 if __name__ == '__main__':
