@@ -5,7 +5,7 @@ var spawn = require('child_process').spawn
 router.get('/', function(req, res, next) {
 	console.log("Testing start")
 
-    var py = spawn('python', ['python/classify_image.py', '--image_file', 'python/dog.jpg']),
+    var py = spawn('python', ['python/classify_image.py']),
     data='';
     dataString = '';
 	py.stdout.on('data', function(data){

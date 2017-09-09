@@ -37,8 +37,8 @@ from __future__ import print_function
 
 import argparse
 import os.path
-import re
 import sys
+import re
 import tarfile
 
 import numpy as np
@@ -167,27 +167,7 @@ def run_inference_on_image(image):
       print('%s (score = %.5f)' % (human_string, score))
 
 
-def maybe_download_and_extract():
-  """Download and extract model tar file."""
-  dest_directory = FLAGS.model_dir
-  if not os.path.exists(dest_directory):
-    os.makedirs(dest_directory)
-  filename = DATA_URL.split('/')[-1]
-  filepath = os.path.join(dest_directory, filename)
-  if not os.path.exists(filepath):
-    def _progress(count, block_size, total_size):
-      sys.stdout.write('\r>> Downloading %s %.1f%%' % (
-          filename, float(count * block_size) / float(total_size) * 100.0))
-      sys.stdout.flush()
-    filepath, _ = urllib.request.urlretrieve(DATA_URL, filepath, _progress)
-    print()
-    statinfo = os.stat(filepath)
-    print('Successfully downloaded', filename, statinfo.st_size, 'bytes.')
-  tarfile.open(filepath, 'r:gz').extractall(dest_directory)
-
-
 def main(_):
-  maybe_download_and_extract()
   image = (FLAGS.image_file if FLAGS.image_file else
            os.path.join(FLAGS.model_dir, 'cropped_panda.jpg'))
   run_inference_on_image(image)
@@ -204,7 +184,7 @@ if __name__ == '__main__':
   parser.add_argument(
       '--model_dir',
       type=str,
-      default='/tmp/imagenet',
+      default='./python/inception',
       help="""\
       Path to classify_image_graph_def.pb,
       imagenet_synset_to_human_label_map.txt, and
@@ -214,13 +194,13 @@ if __name__ == '__main__':
   parser.add_argument(
       '--image_file',
       type=str,
-      default='',
+      default='./pic.jpg',
       help='Absolute path to image file.'
   )
   parser.add_argument(
       '--num_top_predictions',
       type=int,
-      default=5,
+      default=3,
       help='Display this many predictions.'
   )
   FLAGS, unparsed = parser.parse_known_args()
