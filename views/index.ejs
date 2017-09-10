@@ -13,7 +13,10 @@
   <canvas style="display:none" id="canvas" width="640" height="480"></canvas>
   <script src="/socket.io/socket.io.js"></script>
   <script>
-  var socket = io.connect('http://localhost:3000');
+  var target="https://calm-depths-76040.herokuapp.com/"
+  //var target='http://localhost:3000'
+
+  var socket = io.connect(target);
 
 
    // Grab elements, create settings, etc.
