@@ -16,7 +16,8 @@ while true; do
     #upon modification
     #inotifywait -qq -re modify app.js;
     #kill old node if it exists
-    sleep 5;
+    sleep 15;
+    sass public/stylesheets/style.sass > public/stylesheets/style.css
     kill -9 $nodeID
     node app.js &
     nodeID=$!

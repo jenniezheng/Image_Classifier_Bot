@@ -1,35 +1,103 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
+<head>
+  <title> Classifier </title>
+  <!-- Bootstrap css -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<!-- Bootstrap js -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
 
-    <h1><%= title %></h1>
-    <p id="description">Result is <%= result %></p>
-     <video id="video" width="640" height="480" autoplay>Video stream not available on your browser.</video>
-  <button id="snap">Snap Photo</button>
-  <canvas style="display:none" id="canvas" width="640" height="480"></canvas>
+
+<div id="header_box">
+ <h1> Classifier Bot </h1>
+ <button id="about_button" data-toggle="collapse" data-target="#about">About</button>
+ </div>
+<div "about_box">
+<div id="about" class="collapse">
+This application sends images from the client to the server, and the server calls on a python tensorflow process to classify the image before sending it back to the client via socket.io. <br>
+The backend tensorflow application utilizes inception's image recognition model.
+The model is trained on 3000 classes of objects and animals, but unfortunately, is not trained on humans. I appoligize for whatever the model labels you as.
+<br>
+The application requires a camera and a browser which supports media devices. If you are having video streaming issues, try switching to an updated version of firefox or chrome.
+</div>
+
+
+  <div id="labels_box">
+  <div id="labels">
+  <label></label>
+  <label></label>
+  <label></label>
+  </div>
+  </div>
+  <div id="video_box">
+  <video id="video" autoplay="autoplay">Video stream not available on your browser. Try an updated version of chrome or firefox.</video>
+  </div>
+  <!--- Hidden canvas for photo copying only -->
+  <canvas style="display:none" id="canvas" width="512" height="512"></canvas>
+
+
+
+  <!--- Built in to client by socket.io -->
   <script src="/socket.io/socket.io.js"></script>
+
+
+
   <script>
-  var target="https://calm-depths-76040.herokuapp.com/"
-  //var target='http://localhost:3000'
 
-  var socket = io.connect(target);
+    var video, canvas, labels, socket;
+    window.onload = function(){
+    //for heroku builds
+    //var target="https://calm-depths-76040.herokuapp.com/"
+    var target='http://localhost:3000'
 
+     // Grab elements, create settings, etc.
+     socket = io.connect(target);
+     video = document.getElementById('video');
+     canvas = document.getElementById('canvas');
+     labels = document.getElementsByTagName('label');
+     var camera_works=access_video();
 
-   // Grab elements, create settings, etc.
-  var video = document.getElementById('video');
-  var canvas = document.getElementById('canvas');
-var descript = document.getElementById('description');
-  // Get access to the camera!
-  if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    //lower framerate
-      navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment", frameRate: { ideal: 10, max: 15 }  } }).then(function(stream) {
-          video.src = window.URL.createObjectURL(stream);
-          video.play();
+     if (camera_works){
+       copy_to_canvas();
+       socket.emit('img',canvas.toDataURL());
+     }
+     else {
+      alert("Failed to gain access to your camera.");
+     }
+
+     socket.on("result", function (data){
+      //split by new line
+      //lines.length is actually 4 with one empty line
+      lines=data.split(/\r?\n/);
+      console.log(labels.length)
+      for (let i=0; i<labels.length; i+=1) {
+        labels[i].innerHTML=lines[i];
+      }
+
+      copy_to_canvas();
+      socket.emit('img',canvas.toDataURL());
+    });
+
+};
+
+   function access_video(){
+    // Get access to camera
+    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      //lower framerate
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment", frameRate: { ideal: 10, max: 15 },
+        width: 512, height: 512  } }).then(function(stream) {
+        video.src = window.URL.createObjectURL(stream);
+        video.play();
       });
+
+      return true;
+    }
+    //no camera :(
+    return false;
   }
   function copy_to_canvas() {
     var context = canvas.getContext('2d');
@@ -39,22 +107,10 @@ var descript = document.getElementById('description');
     var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   }
 
-copy_to_canvas();
-console.log("Posting!")
-socket.emit('img',canvas.toDataURL());
-
-socket.on("result", function (data){
-  descript.textContent=data;
-   copy_to_canvas();
-   console.log("Posting!")
-   socket.emit('img',canvas.toDataURL());
-});
 
 
 
-
-
-  </script>
-  </body>
+</script>
+</body>
 
 </html>
