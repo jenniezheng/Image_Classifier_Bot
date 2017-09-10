@@ -7,21 +7,50 @@
   <body>
 
     <h1><%= title %></h1>
-    <p>Welcome, data is <%= result %></p>
-     <video id="video" width="640" height="480" autoplay></video>
+    <p id="description">Result is <%= result %></p>
+     <video id="video" width="640" height="480" autoplay>Video stream not available on your browser.</video>
   <button id="snap">Snap Photo</button>
-  <canvas id="canvas" width="640" height="480"></canvas>
+  <canvas style="display:none" id="canvas" width="640" height="480"></canvas>
+  <script src="/socket.io/socket.io.js"></script>
   <script>
+  var socket = io.connect('http://localhost:3000');
+
+
    // Grab elements, create settings, etc.
   var video = document.getElementById('video');
-
+  var canvas = document.getElementById('canvas');
+var descript = document.getElementById('description');
   // Get access to the camera!
   if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+    //lower framerate
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment", frameRate: { ideal: 10, max: 15 }  } }).then(function(stream) {
           video.src = window.URL.createObjectURL(stream);
           video.play();
       });
   }
+  function copy_to_canvas() {
+    var context = canvas.getContext('2d');
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    var data = canvas.toDataURL('image/png');
+    var ctx = canvas.getContext('2d');
+    var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  }
+
+copy_to_canvas();
+console.log("Posting!")
+socket.emit('img',canvas.toDataURL());
+
+socket.on("result", function (data){
+  descript.textContent=data;
+   copy_to_canvas();
+   console.log("Posting!")
+   socket.emit('img',canvas.toDataURL());
+});
+
+
+
+
+
   </script>
   </body>
 

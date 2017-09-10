@@ -139,7 +139,7 @@ def run_inference_on_image(image):
   if not tf.gfile.Exists(image):
     tf.logging.fatal('File does not exist %s', image)
   image_data = tf.gfile.FastGFile(image, 'rb').read()
-
+ #print(image_data)
   # Creates graph from saved GraphDef.
   create_graph()
 
@@ -194,7 +194,7 @@ if __name__ == '__main__':
   parser.add_argument(
       '--image_file',
       type=str,
-      default='./pic.jpg',
+      default='/tmp/img304806663.png',
       help='Absolute path to image file.'
   )
   parser.add_argument(

@@ -3,8 +3,7 @@ var router = express.Router();
 var spawn = require('child_process').spawn
 
 router.get('/', function(req, res, next) {
-	console.log("Testing start")
-
+	res.render('index', { title: 'Express' , result: "nothing yet"});
     var py = spawn('python', ['python/classify_image.py']),
     data='';
     dataString = '';
@@ -20,7 +19,7 @@ router.get('/', function(req, res, next) {
 	});
 
 	py.stdout.on('end', function(){
-  		res.render('index', { title: 'Express' , result: dataString});
+
 	});
 	py.stdin.write(JSON.stringify(data));
 	py.stdin.end();

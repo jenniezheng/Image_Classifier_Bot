@@ -6,7 +6,7 @@ trap "killall node; exit 0;" SIGINT SIGTERM
 
 #in case past node command didn't die
 killall node
-node app.js &
+node server.js &
 nodeID=$!
 sleep 3;
 google-chrome http://localhost:$PORT/
@@ -18,7 +18,7 @@ while true; do
     #kill old node if it exists
     sleep 5;
     kill -9 $nodeID
-    node app.js &
+    node server.js &
     nodeID=$!
     #give node some time open
     sleep 1;

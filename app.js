@@ -1,22 +1,26 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var fs = require('fs');
 var sassMiddleware = require('node-sass-middleware');
+var app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+var spawn = require('child_process').spawn
 
 var index = require('./routes/index');
 var users = require('./routes/users');
 
-var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.png')));
-app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -29,7 +33,6 @@ app.use(sassMiddleware({
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -49,7 +52,26 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.listen(process.env.PORT, process.env.IP,function(){
+
+io.sockets.on('connection', function (socket) {
+  socket.on('img' , function (imgURL) {
+    var url = imgURL.replace(/^data:image\/\w+;base64,/, "");
+    var buf = new Buffer(url, 'base64');
+    fs.writeFile('/tmp/img304806663.png', buf);
+    var py = spawn('python', ['python/classify_image.py']);
+    var results="";
+    py.stdout.on('data', function(data){
+      console.log(data.toString());
+      results+=data.toString();
+    });
+    py.stdout.on('end', function(){
+      console.log("done");
+      socket.emit('result', results);
+    });
+  });
+});
+
+server.listen(process.env.PORT, process.env.IP,function(){
   console.log("App started on localhost:"+process.env.PORT);
 });
 
