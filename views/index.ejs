@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title> Classifier </title>
+  <title> Classy </title>
   <!-- Bootstrap css -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
@@ -13,16 +13,24 @@
 
 
 <div id="header_box">
- <h1> Classifier Bot </h1>
+ <h1> Classy Bot </h1>
  <button id="about_button" data-toggle="collapse" data-target="#about">About</button>
  </div>
 <div "about_box">
 <div id="about" class="collapse">
-This application sends images from the client to the server, and the server calls on a python tensorflow process to classify the image before sending it back to the client via socket.io. <br>
-The backend tensorflow application utilizes inception's image recognition model.
-The model is trained on 3000 classes of objects and animals, but unfortunately, is not trained on humans. I appoligize for whatever the model labels you as.
-<br>
-The application requires a camera and a browser which supports media devices. If you are having video streaming issues, try switching to an updated version of firefox or chrome.
+<h4>Video Streaming Issues?</h4>
+<ul>
+<li>Make sure your device has a camera</li>
+<li>Visit this site on a browser which supports MediaDevices.getUserMedia (A modern version of Google-Chrome or Firefox will do)
+</li>
+<li>Give this site permission to use your camera</li>
+</ul>
+<h4>Application Info</h4>
+This application is built upon Node.js and Python. The client uses websockets to send images over to the server, and the server spawns a child python processes to run forward propagation through inception's pretrained neural network using Tensorflow. The python process returns the results to the server, which forwards the results back to the client via websockets.
+<h4>Inception Model</h4>
+The backend tensorflow application heavily utilizes inception's pretrained image classification model. The model is trained on 3000 classes of objects and animals, but unfortunately, is not trained on humans. If you tried directing the camera at yourself, I appoligize for whatever the model labeled you as.
+
+
 </div>
 
 

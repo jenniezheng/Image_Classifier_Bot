@@ -10,9 +10,7 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
 var spawn = require('child_process').spawn
-
 var index = require('./routes/index');
-
 
 
 // view engine setup
@@ -61,11 +59,9 @@ io.sockets.on('connection', function (socket) {
     var py = spawn('python', ['python/classify_image.py']);
     var results="";
     py.stdout.on('data', function(data){
-      console.log(data.toString());
       results+=data.toString();
     });
     py.stdout.on('end', function(){
-      console.log("done");
       socket.emit('result', results);
     });
   });
