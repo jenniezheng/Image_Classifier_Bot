@@ -26,7 +26,7 @@
 <li>Give this site permission to use your camera</li>
 </ul>
 <h4>Application Info</h4>
-This application is built upon Node.js and Python. The client uses websockets to send images over to the server, and the server spawns a child python processes to run forward propagation through inception's pretrained neural network using Tensorflow. The python process returns the results to the server, which forwards the results back to the client via websockets.
+This application is built with Node.js and Python. The client uses websockets to send images over to the server, and the server spawns child python processes to run forward propagation through inception's pretrained neural network via Tensorflow. The python process returns the results to the server, which forwards the results back to the client via websockets.
 <h4>Inception Model</h4>
 The backend tensorflow application heavily utilizes inception's pretrained image classification model. The model is trained on 3000 classes of objects and animals, but unfortunately, is not trained on humans. If you tried directing the camera at yourself, I appoligize for whatever the model labeled you as.
 
