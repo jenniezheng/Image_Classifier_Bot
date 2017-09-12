@@ -1,5 +1,7 @@
-   var video, canvas, labels, socket;
-    window.onload = function(){
+var video, canvas, labels, socket;
+
+window.onload = function(){
+
     //for heroku builds
     var target="https://calm-depths-76040.herokuapp.com/"
     //var target='http://localhost:3000'
@@ -27,6 +29,7 @@
       for (let i=0; i<labels.length; i+=1) {
         labels[i].innerHTML=lines[i];
       }
+      speak(lines[0].split('(')[0])
 
       copy_to_canvas();
       socket.emit('img',canvas.toDataURL());
@@ -58,3 +61,7 @@
     var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   }
 
+function speak(guess){
+  var msg = new SpeechSynthesisUtterance(guess);
+  window.speechSynthesis.speak(msg);
+}
