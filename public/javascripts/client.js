@@ -1,5 +1,5 @@
 var video, canvas, labels, socket, last_word="";
-var min_certainty=.2;
+var min_certainty=.1;
 window.onload = function(){
 
   //for heroku builds
