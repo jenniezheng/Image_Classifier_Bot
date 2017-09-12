@@ -1,5 +1,5 @@
-var video, canvas, labels, socket;
-
+var video, canvas, labels, socket, last_word="";
+var min_certainty=.2;
 window.onload = function(){
 
   //for heroku builds
@@ -34,8 +34,18 @@ window.onload = function(){
     for (let i=0; i<labels.length; i+=1) {
       labels[i].innerHTML=lines[i];
     }
-    speak(lines[0].split('(')[0])
-
+    //certainty/score
+    var score=parseFloat(lines[0].split("=")[1].split(')')[0]);
+    if( score < min_certainty)
+      speak("I don't know.")
+    else{
+        //first word
+      var word=lines[0].split('(')[0].split(',')[0];
+      if(word!=last_word && score > .1)
+        speak(word)
+      last_word=word;
+    }
+    //do again
     copy_to_canvas();
     socket.emit('img',canvas.toDataURL());
   });
