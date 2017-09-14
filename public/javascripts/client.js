@@ -3,7 +3,7 @@ var min_certainty=.1;
 window.onload = function(){
 
   //for heroku builds
-  var target="https://calm-depths-76040.herokuapp.com/"
+  var target="https://image-classifier-bot.herokuapp.com/"
   //var target='http://localhost:3000'
 
    // Grab elements, create settings, etc.
@@ -14,7 +14,6 @@ window.onload = function(){
    var camera_works=access_video();
 
    //wait for video to update
-
    if (camera_works){
      setTimeout(function(){
        copy_to_canvas();
